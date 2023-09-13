@@ -1,2 +1,2 @@
 # uhbook
-Micro booking tool 
+Simple histgram booking tool 
