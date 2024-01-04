@@ -226,6 +226,7 @@ UH1Book UH1Book::operator +(UH1Book &h)
 {
 	UH1Book hh(*this);
 
+	#if 0
 	constexpr double EPS = std::numeric_limits<double>::epsilon();
 	if ((static_cast<size_t>(h.GetNBins()) == m_x_bins.size())
 		&& (std::abs(h.GetMinimum() - m_x_min) < EPS)
@@ -239,6 +240,9 @@ UH1Book UH1Book::operator +(UH1Book &h)
 	} else {
 		//throw std::runtime_error("Diffrent size histograms");
 	}
+	#else
+	hh.Add(h);
+	#endif
 
 	return hh;
 }
@@ -267,6 +271,7 @@ UH1Book UH1Book::operator -(UH1Book &h)
 {
 	UH1Book hh(*this);
 
+	#if 0
 	constexpr double EPS = std::numeric_limits<double>::epsilon();
 	if ((static_cast<size_t>(h.GetNBins()) == m_x_bins.size())
 		&& (std::abs(h.GetMinimum() - m_x_min) < EPS)
@@ -280,6 +285,9 @@ UH1Book UH1Book::operator -(UH1Book &h)
 	} else {
 		//throw std::runtime_error("Diffrent size histograms");
 	}
+	#else
+	hh.Subtract(h);
+	#endif
 
 	return hh;
 }
@@ -303,6 +311,7 @@ UH1Book UH1Book::operator *(UH1Book &h)
 {
 	UH1Book hh(*this);
 
+	#if 0
 	constexpr double EPS = std::numeric_limits<double>::epsilon();
 	if ((static_cast<size_t>(h.GetNBins()) == m_x_bins.size())
 		&& (std::abs(h.GetMinimum() - m_x_min) < EPS)
@@ -311,6 +320,9 @@ UH1Book UH1Book::operator *(UH1Book &h)
 			hh.m_x_bins[i] = m_x_bins[i] * h.m_x_bins[i];
 		}
 	}
+	#else
+	hh.Multiply(h);
+	#endif
 
 	return hh;
 }
@@ -632,6 +644,7 @@ UH2Book UH2Book::operator +(UH2Book &h)
 {
 	UH2Book hh(*this);
 
+	#if 0
 	constexpr double EPS = std::numeric_limits<double>::epsilon();
 	if (	   (static_cast<size_t>(h.GetNBinsX()) == m_bins.size())
 		&& (std::abs(h.GetMinimumX() - m_x_min) < EPS)
@@ -657,6 +670,9 @@ UH2Book UH2Book::operator +(UH2Book &h)
 	} else {
 		//throw std::runtime_error("Diffrent size histograms");
 	}
+	#else
+	hh.Add(h);
+	#endif
 
 	return hh;
 }
@@ -696,6 +712,7 @@ UH2Book UH2Book::operator -(UH2Book &h)
 {
 	UH2Book hh(*this);
 
+	#if 0
 	constexpr double EPS = std::numeric_limits<double>::epsilon();
 	if (	   (static_cast<size_t>(h.GetNBinsX()) == m_bins.size())
 		&& (std::abs(h.GetMinimumX() - m_x_min) < EPS)
@@ -721,6 +738,9 @@ UH2Book UH2Book::operator -(UH2Book &h)
 	} else {
 		//throw std::runtime_error("Diffrent size histograms");
 	}
+	#else
+	hh.Subtract(h);
+	#endif
 
 	return hh;
 }
@@ -853,9 +873,9 @@ void UH2Book::Print()
 void UH2Book::Draw()
 {
 	const int ngrade = 8;
-	std::array<char, ngrade> dispchar = {
+	std::array<char, ngrade + 1> dispchar = {
 		' ', '.', '-', '+',
-		'x', '*', '@', '#'};
+		'x', '*', '@', '#', '#'};
 
 	double vmax = m_bins[0][0];
 	double vmin = m_bins[0][0];
@@ -973,7 +993,6 @@ int main(int argc, char* argv[])
 	
 	UH1Book h1b = h1a + h1 + h1a;
 	h1b.SetTitle("Add");
-	
 	h1b.Print();
 	h1b.Draw();
 
@@ -986,6 +1005,21 @@ int main(int argc, char* argv[])
 	}
 	h1xx.Print();
 	h1xx.Draw();
+
+	UH1Book h1c = h1b - h1a;
+	h1c.SetTitle("Subtract");
+	h1c.Print();
+	h1c.Draw();
+
+	UH1Book h1d = h1b * h1a;
+	h1d.SetTitle("Multiply");
+	h1d.Print();
+	h1d.Draw();
+
+	UH1Book h1e = h1b / h1a;
+	h1e.SetTitle("Divice");
+	h1e.Print();
+	h1e.Draw();
 
 
 	UH2Book h2("Hello 2D", 40, 0.0, 200.0, 40, 0.0, 200.0);
@@ -1004,12 +1038,25 @@ int main(int argc, char* argv[])
 		h2a.Fill(xval, yval);
 	}
 
-	UH2Book h2b = h2 / h2a;
-
-	h2b.SetTitle("copyed Hello 2D");
+	UH2Book h2b = h2 + h2a;
+	h2b.SetTitle("2D + 2D");
 	h2b.Print();
 	h2b.Draw();
 
+	UH2Book h2c = h2b - h2a;
+	h2c.SetTitle("2D - 2D");
+	h2c.Print();
+	h2c.Draw();
+
+	UH2Book h2d = h2b * h2a;
+	h2d.SetTitle("2D * 2D");
+	h2d.Print();
+	h2d.Draw();
+
+	UH2Book h2e = h2b / h2a;
+	h2e.SetTitle("2D / 2D");
+	h2e.Print();
+	h2e.Draw();
 
 	std::cout << Slowdashify(h1) << std::endl;
 
