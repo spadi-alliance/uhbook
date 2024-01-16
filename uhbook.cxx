@@ -450,8 +450,8 @@ public:
 			for (auto &i : m_bins) i.resize(ybins);
 		}
 	};
-	int GetNBinsX() {return m_bins[0].size();};
-	int GetNBinsY() {return m_bins.size();};
+	int GetNBinsX() {return m_bins.size();};
+	int GetNBinsY() {return m_bins[0].size();};
 
 	void SetMinimumX(double min) {if (m_entry == 0) {m_x_min = min;}};
 	double GetMinimumX() {return m_x_min;};
