@@ -4,10 +4,10 @@
 
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -g -O
-INCLES =
+INCLDES = -I.
 LIBS = -lm
 
-EXECS = uhbook
+EXECS = uhbook test_slowdashify
 all: $(EXECS)
 
 uhbook: uhbook.cxx
@@ -15,6 +15,10 @@ uhbook: uhbook.cxx
 		$< \
 		$(LIBS)
 
+test_slowdashify: test_slowdashify.cxx
+	$(CXX) $(CXXFLAGS) -o $@ $(INCLDES) \
+		$< \
+		$(LIBS)
 
 clean:
 	rm  $(EXECS)
