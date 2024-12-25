@@ -588,7 +588,7 @@ void UH2Book::Fill(double xval, double yval, double weight = 1.0)
 	if ((xval >= m_x_max) && (yval >= m_y_max)) m_ouflows[2][2]++;
 
 	if (	   (xval >= m_x_min) && (xval < m_x_max)
-		&& (yval >= m_y_min) && (yval < m_x_max)) {
+		&& (yval >= m_y_min) && (yval < m_y_max)) {
 		int ix = static_cast<int>(
 			(xval - m_x_min) / (m_x_max - m_x_min) * m_bins.size());
 		int iy = static_cast<int>(
